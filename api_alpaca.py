@@ -10,6 +10,8 @@ previous_low = 0
 current_high = 0
 current_low = 0
 
+
+
 for i in df.intertuples:
     if i.high > previous_high:
         previous_high = i
