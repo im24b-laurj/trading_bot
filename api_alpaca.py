@@ -1,22 +1,18 @@
 import yfinance as yf
 import pandas as pd
-
 symbol = "AAPL"
-df = yf.download(symbol, period="1d", interval="5m")
-print(df)
-print(df.tail())
-previous_high = 0
-previous_low = 0
-current_high = 0
-current_low = 0
+df = yf.download(["AAPL"], period="1d", interval="5m", group_by="ticker")
+df.columns = ['_'.join(col).strip() for col in df.columns.values]
 
+previous_high = float("-inf")
+previous_low = float("inf")
 
-
-for i in df.intertuples:
-    if i.high > previous_high:
-        previous_high = i
-    if i.Close < previous_low:
-        previous_low = i
+print(df.columns)
+for index, row in df.iterrows():
+    if row["AAPL_High"] > previous_high:
+        previous_high = row["AAPL_High"]
+    if row["AAPL_Low"] < previous_low:
+        previous_low = row["AAPL_Low"]
 
 print(previous_high, previous_low)
 
