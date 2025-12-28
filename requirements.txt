@@ -5,3 +5,4 @@ pydantic==2.5.0
 
 yfinance~=0.2.66
 pandas~=2.3.3
+Flask~=3.1.0

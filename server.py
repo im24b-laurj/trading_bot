@@ -33,23 +33,25 @@ def get_current_price():
 def trading_bot():
     global price_current, trades, prev_high_current, prev_low_current
 
-    # Choose market symbol (e.g. "BTC-USD", "NQ=F" for Nasdaq 100 futures, or "^NDX" index)
-    symbol = "NQ=F"
+    # Choose market symbol:
+    # - "BTC-USD" (Bitcoin, trades 24/7 and moves a lot)
+    # - "ETH-USD" (Ethereum)
+    # - "NQ=F" (Nasdaq 100 futures, only when market is open)
+    symbol = "BTC-USD"
     cash = 10_000.0
     position = 0
     qty = 1
     entry_price = 0.0
 
-    stop_loss = 3
-    take_profit = 6.0
+    stop_loss = 30
+    take_profit = 60
     window = 2
-    last_candle_time = None
 
     while True:
         try:
             df = yf.download(symbol, period="1d", interval="1m", progress=False, auto_adjust=False)
             if df is None or df.empty:
-                time.sleep(5)
+                time.sleep(10)
                 continue
 
             df.index = pd.to_datetime(df.index)
@@ -75,15 +77,9 @@ def trading_bot():
             prev_high_current = prev_high if pd.notna(prev_high) else prev_high_current
             prev_low_current = prev_low if pd.notna(prev_low) else prev_low_current
 
-            if candle_time == last_candle_time:
-                # No new candle yet; wait a bit and try again
-                time.sleep(5)
-                continue
-            last_candle_time = candle_time
-
-            # Entry
+            # Entry: break of previous rolling high/low (inclusive)
             if position == 0 and pd.notna(prev_high) and pd.notna(prev_low):
-                if price > prev_high:
+                if price >= prev_high:
                     position = -1
                     entry_price = price
                     trades.append({
@@ -93,7 +89,7 @@ def trading_bot():
                         "side": "SHORT",
                         "pnl": None
                     })
-                elif price < prev_low:
+                elif price <= prev_low:
                     position = 1
                     entry_price = price
                     trades.append({
@@ -124,11 +120,11 @@ def trading_bot():
                     trades[-1]["pnl"] = round(pnl, 2)
                     position = 0
 
-            time.sleep(5)
+            time.sleep(10)
 
         except Exception as e:
             print("Bot error:", e)
-            time.sleep(5)
+            time.sleep(10)
 
 if __name__ == "__main__":
     Thread(target=trading_bot, daemon=True).start()

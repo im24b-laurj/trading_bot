@@ -1,14 +1,5 @@
 html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      width: 100%;
-    }
-    .tradingview-widget-container {
-      height: 100vh; /* Full viewport height */
-      width: 100vw;  /* Full viewport width */
-    }
-    .tradingview-widget-container__widget {
-      height: 100%;
-      width: 100%;
+     
     }

@@ -111,12 +111,12 @@ async function fetchHighLow() {
     highLowContainer.innerText = `High: ${round(data.high, 2)}  |  Low: ${round(data.low, 2)}`;
 }
 
-// Refresh frequently (every second) so UI feels snappy
+// Refresh every 5 seconds
 setInterval(() => {
     fetchTrades();
     getCurrentPrice();
     fetchHighLow();
-}, 1000);
+}, 5000);
 
 // Initial load
 fetchTrades();
