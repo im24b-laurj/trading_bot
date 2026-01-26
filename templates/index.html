@@ -5,54 +5,41 @@
     <title>Trading Bot Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Cache-bust CSS so changes are always picked up -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=1) }}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        #dashboard {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 800px;
-            margin: auto;
-        }
-        .trade-profit {
-            color: green;
-        }
-        .trade-loss {
-            color: red;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css', v=2) }}">
 </head>
 <body>
-<h1>Paper Trading Dashboard</h1>
-<div id="dashboard">
-    <div id="current_price">Current Price: 0</div>
+<div class="container">
+    <header>
+        <h1> Paper Trading Dashboard</h1>
+    </header>
+    
+    <div id="dashboard">
+        <div id="current_price">Current Price: <span id="current_price_value">0</span></div>
 
-    <!-- Summary cards -->
-    <div id="summary">
-        <div class="stat-card" id="total_pnl_card">
-            <div class="stat-label">Total PnL</div>
-            <div class="stat-value" id="total_pnl_value">0.00</div>
+        <!-- Summary cards -->
+        <div id="summary">
+            <div class="stat-card" id="total_pnl_card">
+                <div class="stat-label">Total PnL</div>
+                <div class="stat-value" id="total_pnl_value">0.00</div>
+            </div>
+            <div class="stat-card" id="high_low_card">
+                <div class="stat-label">Rolling High / Low</div>
+                <div class="stat-value" id="high_low_value">High: - Low: -</div>
+            </div>
         </div>
-        <div class="stat-card" id="high_low_card">
-            <div class="stat-label">Rolling High / Low</div>
-            <div class="stat-value" id="high_low_value">High: - Low: -</div>
+
+        <!-- Cash over time chart -->
+        <div class="chart-section">
+            <h3> Bot Cash Over Time</h3>
+            <canvas id="cash_chart"></canvas>
+        </div>
+
+        <!-- Trades section -->
+        <div class="trades-section">
+            <h3> Trade History</h3>
+            <div id="trades"></div>
         </div>
     </div>
-
-    <h3>Trades</h3>
-    <div id="trades"></div>
-
-    <!-- Cash over time chart -->
-    <h3>Bot Cash Over Time</h3>
-    <canvas id="cash_chart" height="120"></canvas>
 </div>
 
 <!-- Chart.js library for the cash chart -->

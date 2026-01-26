@@ -56,7 +56,7 @@ def trading_bot():
 
             df.index = pd.to_datetime(df.index)
 
-            # Work with both simple columns ("High") and MultiIndex columns ("High_<SYMBOL>")
+           
             if isinstance(df.columns, pd.MultiIndex):
                 df.columns = ['_'.join(col).strip() for col in df.columns.values]
 
